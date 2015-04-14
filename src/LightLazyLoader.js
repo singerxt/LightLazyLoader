@@ -70,7 +70,9 @@ LightLazyImages.prototype.createImage = function (el) {
       cssClass = el.className.replace('lazy-image', ' lazy-image-processed ');
   img.className += cssClass;
   img.setAttribute('src', el.dataset.src);
-  el.parentNode.replaceChild(img,el);
+  img.onload = function () {
+    el.parentNode.replaceChild(img,el);
+  };
   el.converted = true;
 };
 
