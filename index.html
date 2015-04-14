@@ -708,7 +708,7 @@
 
   LightLazyImages.prototype.checkElements = function () {
     var isVisible;
-    for (var i = 0, len = this.lazyElems.length - 1; i < len; i++) {
+    for (var i = 0, len = this.lazyElems.length; i < len; i++) {
       isVisible = this.isInView(this.lazyElems[i]);
       if(isVisible) {
         this.createImage(this.lazyElems[i]);
@@ -762,7 +762,11 @@
     img.className += cssClass;
     img.setAttribute('src', el.dataset.src);
     img.onload = function () {
-      el.parentNode.replaceChild(img,el);
+      try {
+        el.parentNode.replaceChild(img,el);
+      } catch (err) {
+        //To do
+      }
     };
     el.converted = true;
   };
@@ -777,7 +781,7 @@
     var that = this,
       obsConfig = { attributes: false, childList: true, characterData: false, subtree: true },
       obs = new MutationObserver(function () {
-        this.lazyElems = Array.prototype.slice.call(document.querySelectorAll('span.lazy-image'));
+        that.lazyElems = Array.prototype.slice.call(document.querySelectorAll('span.lazy-image'));
         that.prepareData();
       });
     window.onscroll =  this.checkElements.bind(this);
