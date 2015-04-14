@@ -1,0 +1,16 @@
+# Angularfire config
+app/scripts/angularfire/config.js
+
+# Utilities
+/scripts/
+/app/scripts/services/debug.js
+
+logs/*
+!.gitkeep
+node_modules/
+bower_components/
+dist/
+.tmp
+.sass-cache
+.idea/
+.DS_Store
