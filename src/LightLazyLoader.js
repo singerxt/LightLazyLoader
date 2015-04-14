@@ -49,7 +49,7 @@ LightLazyImages.prototype.convertedFilter = function (el) {
 LightLazyImages.prototype.prepareData = function () {
   var sortByPositionTop = function (a,b) {
     var aCoords = a.getBoundingClientRect(),
-        bCoords = b.getBoundingClientRect();
+      bCoords = b.getBoundingClientRect();
     if(aCoords.top < bCoords.top) {return -1;}
     if(aCoords.top > bCoords.top) {return 1}
     return 0;
@@ -67,11 +67,15 @@ LightLazyImages.prototype.prepareData = function () {
 
 LightLazyImages.prototype.createImage = function (el) {
   var img = document.createElement('img'),
-      cssClass = el.className.replace('lazy-image', ' lazy-image-processed ');
+    cssClass = el.className.replace('lazy-image', ' lazy-image-processed ');
   img.className += cssClass;
   img.setAttribute('src', el.dataset.src);
   img.onload = function () {
-    el.parentNode.replaceChild(img,el);
+    try {
+      el.parentNode.replaceChild(img,el);
+    } catch (err) {
+      //To do
+    }
   };
   el.converted = true;
 };
@@ -84,11 +88,11 @@ LightLazyImages.prototype.createImage = function (el) {
 
 LightLazyImages.prototype.bindEvents = function () {
   var that = this,
-      obsConfig = { attributes: false, childList: true, characterData: false, subtree: true },
-      obs = new MutationObserver(function () {
-        this.lazyElems = Array.prototype.slice.call(document.querySelectorAll('span.lazy-image'));
-        that.prepareData();
-      });
+    obsConfig = { attributes: false, childList: true, characterData: false, subtree: true },
+    obs = new MutationObserver(function () {
+      that.lazyElems = Array.prototype.slice.call(document.querySelectorAll('span.lazy-image'));
+      that.prepareData();
+    });
   window.onscroll =  this.checkElements.bind(this);
   window.onresize = this.checkElements.bind(this);
   window.onload = this.checkElements.bind(this);
@@ -107,6 +111,7 @@ LightLazyImages.prototype.bindEvents = function () {
  */
 
 LightLazyImages.prototype.isInView = function (el) {
+  if(el === undefined) return false;
   var coords = el.getBoundingClientRect(),
     inViewHeight = ((coords.top >= 0 && coords.left >= 0 && coords.top) <= (window.innerHeight || document.documentElement.clientHeight)),
     inViewWidth  = (coords.left <= (window.innerWidth || document.documentElement.clientWidth));
