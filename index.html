@@ -708,7 +708,7 @@
 
   LightLazyImages.prototype.checkElements = function () {
     var isVisible;
-    for (var i = 0, len = this.lazyElems.length; i < len; i++) {
+    for (var i = 0, len = this.lazyElems.length - 1; i < len; i++) {
       isVisible = this.isInView(this.lazyElems[i]);
       if(isVisible) {
         this.createImage(this.lazyElems[i]);
@@ -798,6 +798,7 @@
    */
 
   LightLazyImages.prototype.isInView = function (el) {
+    if(el === undefined) return false;
     var coords = el.getBoundingClientRect(),
       inViewHeight = ((coords.top >= 0 && coords.left >= 0 && coords.top) <= (window.innerHeight || document.documentElement.clientHeight)),
       inViewWidth  = (coords.left <= (window.innerWidth || document.documentElement.clientWidth));
