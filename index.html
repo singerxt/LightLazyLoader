@@ -693,16 +693,6 @@ function LightLazyImages() {
   this.prepareData();
   this.bindEvents();
 }
-/**
- * Light Lazy Images constructor
- * @constructor
- */
-
-function LightLazyImages() {
-  this.lazyElems = Array.prototype.slice.call(document.querySelectorAll('span.lazy-image'));
-  this.prepareData();
-  this.bindEvents();
-}
 
 /**
  * Check if any lazy element is
@@ -765,7 +755,9 @@ LightLazyImages.prototype.createImage = function (el) {
       cssClass = el.className.replace('lazy-image', ' lazy-image-processed ');
   img.className += cssClass;
   img.setAttribute('src', el.dataset.src);
-  el.parentNode.replaceChild(img,el);
+  img.onload = function () {
+    el.parentNode.replaceChild(img,el);
+  };
   el.converted = true;
 };
 
@@ -808,6 +800,7 @@ LightLazyImages.prototype.isInView = function (el) {
 };
 
 new LightLazyImages();
+
   </script>
 </body>
 </html>
