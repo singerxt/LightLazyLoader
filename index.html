@@ -234,7 +234,14 @@ $ git checkout gh-pages
 <h3>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h3>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>Download LightLazyLoader include JS and CSS file on the bottom of html file. Replace all <img> tag to
+<code><span class="lazy-image" data-src="url to image"></span></code>
+Example:
+<code><img class="big" src="http://google.com/yo.jpg"/></code>
+Should be replaced to 
+<code><span class="big lazy-image" data-src="http://google.com/yo.jpg"></span></code>
+That's all ! ;-)
+</p>
 
 <h3>
 <a id="author" class="anchor" href="#author" aria-hidden="true"><span class="octicon octicon-link"></span></a>Author</h3>
