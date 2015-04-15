@@ -176,8 +176,9 @@
     
         .images-vertical {
           width: 100%;
-          overflow-x: auto;
+          overflow-x: scroll;
           height: 200px;
+          -webkit-overflow-scrolling: touch;
         }
     
         .images-horizontal {
@@ -186,6 +187,7 @@
           height: 210px;
           position: relative;
           overflow-x: scroll;
+          -webkit-overflow-scrolling: touch;
         }
     
         .images-horizontal .wrap {
