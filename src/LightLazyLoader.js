@@ -94,5 +94,5 @@ LightLazyImages.prototype.isInView = function (el) {
 
   return inViewHeight && inViewWidth;
 };
-
+//
 new LightLazyImages();
