@@ -4,7 +4,7 @@
  */
 
 function LightLazyImages() {
-  this.lazyElems = Array.prototype.slice.call(document.querySelectorAll('span.lazy-image'));
+  this.lazyElems = document.querySelectorAll('span.lazy-image');
   this.bindEvents();
 }
 
@@ -15,11 +15,8 @@ function LightLazyImages() {
  */
 
 LightLazyImages.prototype.checkElements = function () {
-  var isVisible;
-  console.log('check');
   for (var i = 0, len = this.lazyElems.length; i < len; i++) {
-    isVisible = this.isInView(this.lazyElems[i]);
-    if(isVisible) {
+    if(this.isInView(this.lazyElems[i])) {
       this.createImage(this.lazyElems[i]);
     }
   }
@@ -56,10 +53,10 @@ LightLazyImages.prototype.createImage = function (el) {
 
 LightLazyImages.prototype.bindEvents = function () {
   var that = this,
-    obsConfig = { attributes: true, childList: true, characterData: true, subtree: true },
-    obs = new MutationObserver(function () {
-      that.lazyElems = Array.prototype.slice.call(document.querySelectorAll('span.lazy-image:not(.lazy-image-processing)'));
-    }),
+      obsConfig = { attributes: true, childList: true, characterData: true, subtree: true },
+      obs = new MutationObserver(function () {
+        that.lazyElems = document.querySelectorAll('span.lazy-image:not(.lazy-image-processing)');
+      }),
     DOMelements = document.querySelectorAll('*');
   window.onscroll =  this.checkElements.bind(this);
   window.onresize = this.checkElements.bind(this);
@@ -94,5 +91,5 @@ LightLazyImages.prototype.isInView = function (el) {
 
   return inViewHeight && inViewWidth;
 };
-//
+
 new LightLazyImages();
