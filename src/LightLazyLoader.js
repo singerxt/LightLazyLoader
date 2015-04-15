@@ -5,7 +5,6 @@
 
 function LightLazyImages() {
   this.lazyElems = Array.prototype.slice.call(document.querySelectorAll('span.lazy-image'));
-  this.prepareData();
   this.bindEvents();
 }
 
@@ -17,34 +16,15 @@ function LightLazyImages() {
 
 LightLazyImages.prototype.checkElements = function () {
   var isVisible;
+  console.log('check');
   for (var i = 0, len = this.lazyElems.length; i < len; i++) {
     isVisible = this.isInView(this.lazyElems[i]);
     if(isVisible) {
       this.createImage(this.lazyElems[i]);
-    } else {
-      break;
     }
   }
 };
 
-/**
- * Sort all elements by "top" position
- * so we can break loop in checkElements()
- * @returns {undefined}
- */
-
-LightLazyImages.prototype.prepareData = function () {
-  var sortByPositionTop = function (a,b) {
-    var aCoords = a.getBoundingClientRect(),
-        bCoords = b.getBoundingClientRect();
-    if(aCoords.top < bCoords.top) {return -1;}
-    if(aCoords.top > bCoords.top) {return 1}
-    return 0;
-  };
-
-  this.lazyElems = this.lazyElems.sort(sortByPositionTop);
-  this.checkElements();
-};
 
 /**
  * Replace lazy element to image.
@@ -59,10 +39,13 @@ LightLazyImages.prototype.createImage = function (el) {
   img.className += cssClass;
   img.setAttribute('src', el.dataset.src);
   img.onload = function () {
-    el.parentNode.replaceChild(img,el);
-    img.className = img.className.replace('lazy-image-processing', '');
+    try {
+      el.parentNode.replaceChild(img,el);
+      img.className = img.className.replace('lazy-image-processing', '');
+    } catch (err) {
+      //
+    }
   };
-  el.converted = true;
 };
 
 /**
@@ -73,14 +56,22 @@ LightLazyImages.prototype.createImage = function (el) {
 
 LightLazyImages.prototype.bindEvents = function () {
   var that = this,
-    obsConfig = { attributes: false, childList: true, characterData: false, subtree: true },
+    obsConfig = { attributes: true, childList: true, characterData: true, subtree: true },
     obs = new MutationObserver(function () {
       that.lazyElems = Array.prototype.slice.call(document.querySelectorAll('span.lazy-image:not(.lazy-image-processing)'));
-      that.prepareData();
-    });
+    }),
+    DOMelements = document.querySelectorAll('*');
   window.onscroll =  this.checkElements.bind(this);
   window.onresize = this.checkElements.bind(this);
   window.onload = this.checkElements.bind(this);
+
+  for(var i = 0, len = DOMelements.length; i < len; i++) {
+    DOMelements[i].addEventListener('transitionend', this.checkElements.bind(this));
+    DOMelements[i].addEventListener('transitionstart', this.checkElements.bind(this));
+    DOMelements[i].addEventListener('animationstart', this.checkElements.bind(this));
+    DOMelements[i].addEventListener('animationend', this.checkElements.bind(this));
+    DOMelements[i].addEventListener('scroll', this.checkElements.bind(this));
+  }
 
   /*
    * Update array when DOM is changed for example
