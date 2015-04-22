@@ -1,6 +1,8 @@
 # Light Lazy Loader
 
-Very simple lazy loading for images.
+Very simple lazy loading for images - just include file with script ! ;-)
+
+[DEMO](http://singerxt.github.io/LightLazyLoader/)
 
 ## Usage
 
