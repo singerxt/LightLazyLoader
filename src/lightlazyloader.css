@@ -2,6 +2,7 @@
   width: auto;
   height: auto;
   position: relative;
+  display: block;
 }
 
 @-webkit-keyframes loaded {
