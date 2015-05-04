@@ -7,8 +7,7 @@
   function LightLazyImages() {
     this.lazyElems = document.querySelectorAll('span.lazy-image');
     this.checkElements();
-    if(typeof window.MutationObserver !== 'function' || true) {
-      console.log('bind interval');
+    if(typeof window.MutationObserver !== 'function') {
       this.oldBrowsersWorkAround();
     } else {
       this.bindEvents();
