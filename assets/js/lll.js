@@ -7,7 +7,11 @@
   function LightLazyImages() {
     this.lazyElems = document.querySelectorAll('span.lazy-image');
     this.checkElements();
-    this.bindEvents();
+    if(typeof window.MutationObserver !== 'function') {
+      this.oldBrowsersWorkAround();
+    } else {
+      this.bindEvents();
+    }
   }
 
   /**
@@ -46,6 +50,19 @@
         //
       }
     };
+  };
+
+  /**
+   * Only modern browsers support Mutation Observer.
+   * For old browsers we using setInterval workaround.
+   */
+
+  LightLazyImages.prototype.oldBrowsersWorkAround = function () {
+    var that = this;
+    setInterval(function () {
+      that.lazyElems = document.querySelectorAll('span.lazy-image:not(.lazy-image-processing)');
+      that.checkElements();
+    },500);
   };
 
   /**

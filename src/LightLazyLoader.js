@@ -7,7 +7,12 @@
   function LightLazyImages() {
     this.lazyElems = document.querySelectorAll('span.lazy-image');
     this.checkElements();
-    this.bindEvents();
+    if(typeof window.MutationObserver !== 'function' || true) {
+      console.log('bind interval');
+      this.oldBrowsersWorkAround();
+    } else {
+      this.bindEvents();
+    }
   }
 
   /**
@@ -34,7 +39,7 @@
 
   LightLazyImages.prototype.createImage = function (el) {
     var img = document.createElement('img'),
-      cssClass = el.className.replace('lazy-image', ' lazy-image-processed ');
+        cssClass = el.className.replace('lazy-image', ' lazy-image-processed ');
     el.className += ' lazy-image-processing';
     img.className += cssClass;
     img.setAttribute('src', el.dataset.src);
@@ -46,6 +51,19 @@
         //
       }
     };
+  };
+
+  /**
+   * Only modern browsers support Mutation Observer.
+   * For old browsers we using setInterval workaround.
+   */
+
+  LightLazyImages.prototype.oldBrowsersWorkAround = function () {
+    var that = this;
+    setInterval(function () {
+      that.lazyElems = document.querySelectorAll('span.lazy-image:not(.lazy-image-processing)');
+      that.checkElements();
+    },500);
   };
 
   /**
