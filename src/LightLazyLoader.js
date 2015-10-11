@@ -73,7 +73,7 @@
 
   LightLazyImages.prototype.bindEvents = function () {
     var that = this,
-      obsConfig = { attributes: true, childList: true, characterData: true, subtree: true },
+      obsConfig = { attributes: false, childList: true, characterData: false, subtree: true },
       obs = new MutationObserver(function () {
         that.lazyElems = document.querySelectorAll('span.lazy-image:not(.lazy-image-processing)');
       }),
@@ -93,6 +93,7 @@
      * Update array when DOM is changed for example
      * after ajax call
      */
+
     obs.observe(document.body, obsConfig);
   };
 
