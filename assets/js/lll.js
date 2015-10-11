@@ -38,7 +38,7 @@
 
   LightLazyImages.prototype.createImage = function (el) {
     var img = document.createElement('img'),
-        cssClass = el.className.replace('lazy-image', ' lazy-image-processed ');
+      cssClass = el.className.replace('lazy-image', ' lazy-image-processed ');
     el.className += ' lazy-image-processing';
     img.className += cssClass;
     img.setAttribute('src', el.dataset.src);
